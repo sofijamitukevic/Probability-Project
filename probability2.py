@@ -1,70 +1,41 @@
-
 import random
-import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 
-NUM_SIMULATIONS = 10000
-NUM_CARDS = 100
+def simulate_game():
+    deck = list(range(1, 101))
+    random.shuffle(deck)
+    
+    hits = 0
+    for i in range(1, 101):
+        if deck[i - 1] == i:
+            hits += 1
+    
+    return hits
 
-def initialize_deck():
-    return list(range(1, NUM_CARDS + 1))
+def simulate_multiple_games(num_simulations):
+    total_hits = 0
+    hits_list = []
 
-def calculate_variance(results):
-    variance_sum = 0
-    average_value = sum(results) / len(results)
-    for i in range(len(results)):
-        variance_sum += np.power(results[i] - average_value, 2)
-    return variance_sum / len(results)
+    for _ in range(num_simulations):
+        hits = simulate_game()
+        total_hits += hits
+        average_hits = total_hits / (len(hits_list) + 1)
+        hits_list.append(average_hits)
 
-# Simulation using numpy
-np.random.seed(42)
-hits_data = np.zeros(NUM_SIMULATIONS)
+    return hits_list
 
-for i in range(NUM_SIMULATIONS):
-    deck = np.arange(1, NUM_CARDS + 1)
-    np.random.shuffle(deck)
-    hits_data[i] = np.sum(deck == np.arange(1, NUM_CARDS + 1))
+num_simulations = 10000
+hits_over_simulations = simulate_multiple_games(num_simulations)
 
-# Calculate expectation and variance using numpy
-expectation_np = np.mean(hits_data)
-variance_np = np.var(hits_data)
+# Plotting the graph
+plt.plot(range(1, num_simulations + 1), hits_over_simulations, label='Average Hits')
 
-print('Expectation (numpy):', expectation_np)
-print('Variance (numpy):', variance_np)
-
-# Simulation using random module
-simulation_results = []
-mean_values = []
-variability_values = []
-
-for i in range(NUM_SIMULATIONS):
-    match_counter = 0
-    card_deck = initialize_deck()
-    random.shuffle(card_deck)
-
-    for j in range(len(card_deck)):
-        if (card_deck[j] - 1) == j:
-            match_counter += 1
-
-    simulation_results.append(match_counter)
-    mean_values.append(np.mean(simulation_results))
-    variability_values.append(calculate_variance(simulation_results))
-
-# Calculate expectation and variance using random module
-expectation_random = np.mean(simulation_results)
-variance_random = np.var(simulation_results)
-
-
-
-# Plot the average changes over the simulations for both methods
-# Plotting
-plt.figure(figsize=(10, 6))
-plt.plot(x, averages, color='skyblue', label='Average')
-plt.xlabel("Number of Simulations")
-plt.ylabel("Average")
-plt.title("How the Average Changes Over the Simulations")
+plt.xlabel('Number of Simulations')
+plt.ylabel('Average Hits')
+plt.title('Average Hits Over Simulations')
 plt.legend()
-plt.grid(True)
-plt.savefig('plotQ2A.png', dpi=300, bbox_inches='tight')
+
 plt.show()
+
+
+
