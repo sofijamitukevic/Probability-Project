@@ -49,3 +49,15 @@ print('variance', variance)
  plt.show()
 
 
+
+# Plot the distribution of total hits
+plt.figure(figsize=(10, 6))
+sns.histplot(hits_data, bins=range(0, 101), kde=True, color='skyblue')
+plt.title('Distribution of Total Hits in 10,000 Simulations')
+plt.xlabel('Total Hits')
+plt.ylabel('Probability')
+plt.grid(True)
+plt.show()
+
+
+
