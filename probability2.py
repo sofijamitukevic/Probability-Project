@@ -58,11 +58,13 @@ variance_random = np.var(simulation_results)
 
 
 # Plot the average changes over the simulations for both methods
-plt.plot(range(1, NUM_SIMULATIONS + 1), mean_values, label='Random Module')
-plt.plot(range(1, NUM_SIMULATIONS + 1), hits_data.cumsum() / np.arange(1, NUM_SIMULATIONS + 1), label='Numpy')
+# Plotting
+plt.figure(figsize=(10, 6))
+plt.plot(x, averages, color='skyblue', label='Average')
 plt.xlabel("Number of Simulations")
 plt.ylabel("Average")
 plt.title("How the Average Changes Over the Simulations")
 plt.legend()
-plt.savefig('combined_mean_simulation_plot.png', dpi=300, bbox_inches='tight')
+plt.grid(True)
+plt.savefig('plotQ2A.png', dpi=300, bbox_inches='tight')
 plt.show()
